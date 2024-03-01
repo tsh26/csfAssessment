@@ -1,35 +1,41 @@
 <h2>Checkout</h2>
 
-<form>
+<form [formGroup]="checkoutForm" (submit)="onCheckout()"> 
   <table>
     <tr>
       <td>Name: </td>
       <td>
-        <input type="text" size="30">
+        <input type="text" formControlName="name" size="30">
       </td>
+      <div *ngIf="checkoutForm.get('name')?.hasError('required')">
+        Name is required.
+    </div>
     </tr>
     <tr>
       <td>Address: </td>
       <td>
-        <input type="text" size="30">
+        <input type="text" formControlName="address" size="30">
       </td>
+      <div *ngIf="checkoutForm.get('address')?.hasError('required') || checkoutForm.get('address')?.hasError('minlength')">
+        Please enter an address with more than 3 characters.
+    </div>
     </tr>
     <tr>
       <td>Priority: </td>
       <td>
-        <input type="checkbox">
+        <input type="checkbox" formControlName="priority">
       </td>
     </tr>
     <tr>
       <td>Comments: </td>
       <td>
-        <textarea cols="30" rows="4"></textarea>
+        <textarea cols="30" rows="4" formControlName="comments"></textarea>
       </td>
     </tr>
     <tr>
       <td></td>
       <td>
-        <button type="submit">Place Order</button>
+        <button type="submit" [disabled]="checkoutForm.invalid">Place Order</button>
       </td>
     </tr>
   </table>
@@ -45,16 +51,18 @@
       <th>Quantity</th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <td> Apple </td>
-      <td> 0.5 </td>
-      <td> 6 </td>
-    </tr>
-  </tbody>
-  <tfoot>
-    <td></td>
-    <td>Total: </td>
-    <td> 100 </td>
-  </tfoot>
+<tbody>
+  <tr *ngFor = "let lineitem of lineItems" >
+    <td> {{ lineitem.name }} </td>
+    <td> ₹ {{ lineitem.price }} </td>
+    <td> {{ lineitem.quantity }} </td>
+  </tr>
+</tbody>
+<tfoot>
+  <td></td>
+  <td>Total: </td>
+  <td> ₹ {{ getTotalPrice() }} </td>
+</tfoot>
 </table>
+
+

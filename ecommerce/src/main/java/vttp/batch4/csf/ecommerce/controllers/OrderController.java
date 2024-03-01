@@ -17,9 +17,8 @@ public class OrderController {
   // If this method is changed, any assessment task relying on this method will
   // not be marked
   public ResponseEntity<String> postOrder() {
-
     // TODO Task 3
-	 
-	 return null;
+	 poSvc.createNewPurchaseOrder(null);
+	 return ResponseEntity.ok("Order has been created");
   }
 }

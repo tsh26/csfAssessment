@@ -1,8 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
-import {Observable} from 'rxjs';
-import {Product} from '../models';
-import {ProductService} from '../product.service';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit, Output, inject } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { LineItem, Product } from '../models';
+import { ProductService } from '../product.service';
+import { ActivatedRoute } from '@angular/router';
+import { CartStore } from '../cart.store';
 
 @Component({
   selector: 'app-category',
@@ -15,6 +16,10 @@ export class CategoryComponent implements OnInit {
 
   private prodSvc = inject(ProductService)
   private activatedRoute = inject(ActivatedRoute)
+  private cartStore = inject(CartStore)
+
+  @Output()
+  product = new Subject<Product>()
 
   category: string = "not set"
 
@@ -23,5 +28,17 @@ export class CategoryComponent implements OnInit {
   ngOnInit(): void {
     this.category = this.activatedRoute.snapshot.params['category']
     this.products$ = this.prodSvc.getProductsByCategory(this.category)
+    // this.cartStore.addProductToCart(lineItem)
   }
+  addProductToCart(product: Product): void {
+    const lineItem = {
+      name: product.name,
+      prodId: product.prodId,
+      quantity: 1,
+      price: product.price
+    };
+
+    this.cartStore.addProductToCart(lineItem);
+  }
+
 }

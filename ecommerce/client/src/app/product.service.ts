@@ -1,13 +1,12 @@
-import {Injectable, inject} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Order, Product} from "./models";
+import { Injectable, inject } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { Order, Product } from "./models";
 
 @Injectable()
 export class ProductService {
 
   private http = inject(HttpClient)
-
 
   // IMPORTANT: DO NOT MODIFY THIS METHOD.
   // If this method is changed, any assessment task relying on this method will
@@ -26,7 +25,18 @@ export class ProductService {
   // IMPORTANT: DO NOT MODIFY THIS METHOD.
   // If this method is changed, any assessment task relying on this method will
   // not be marked
+  // TODO Task 3
   checkout(order: Order) {
-    // TODO Task 3
+
+    return this.http.post('/api/order', order, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
   }
+
+
+
+
 }
